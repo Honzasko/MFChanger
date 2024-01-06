@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+  "name": "MFChanger",
+  "version": "1.0",
+  "permissions": ["activeTab"],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "browser_action": {
+    "default_icon": {
+      "48": "icon.png"
+    },
+    "default_title": "MFChanger",
+    "default_popup": "popup.html"
+  }
+}
+
