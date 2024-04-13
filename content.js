@@ -16,13 +16,16 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     var oscillator = audioContext.createOscillator();
     oscillator.type = 'sine';
         var audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        
-        // Get original frequency
-
+        var videoElements = document.getElementsByTagName("video");
+        oscillator.connect(audioContext.destination);
+        for(let i = 0;i < videoElements.length;i++)
+        {
+          const mediaStreamDestination = audioContext.createMediaStreamDestination();
+          videoElements[i].srcObject = mediaStreamDestination.stream;
+          mediaStreamDestination.connect(oscillator);
+        }
         
         oscillator.frequency.setValueAtTime(originalFrequency / (outFrequency / originalFrequency), audioContext.currentTime);
-        oscillator.connect(audioContext.destination);
-    
     oscillator.start();
 oscillator.stop(audioContext.currentTime + 1);
   }
