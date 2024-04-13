@@ -17,6 +17,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     oscillator.type = 'sine';
         var audioContext = new (window.AudioContext || window.webkitAudioContext)();
         var videoElements = document.getElementsByTagName("video");
+        var audioElements = document.getElementsByTagName("audio");
         oscillator.connect(audioContext.destination);
         for(let i = 0;i < videoElements.length;i++)
         {
@@ -24,6 +25,13 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
           videoElements[i].srcObject = mediaStreamDestination.stream;
           mediaStreamDestination.connect(oscillator);
         }
+        for(let i = 0;i < audioElements.length;i++)
+        {
+          const mediaStreamDestination = audioContext.createMediaStreamDestination();
+          audioElements[i].srcObject = mediaStreamDestination.stream;
+          mediaStreamDestination.connect(oscillator);
+        }
+        
         
         oscillator.frequency.setValueAtTime(originalFrequency / (outFrequency / originalFrequency), audioContext.currentTime);
     oscillator.start();
